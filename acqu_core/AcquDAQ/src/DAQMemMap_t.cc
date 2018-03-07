@@ -13,6 +13,7 @@ extern "C"{
 #include <sys/mman.h>
 }
 
+ClassImp(DAQMemMap_t)               // Root linkage
 
 DAQMemMap_t::DAQMemMap_t( void* addr, Int_t size, Int_t fMemFd, TA2System* sys )
 : TObject()  
@@ -31,6 +32,19 @@ DAQMemMap_t::DAQMemMap_t( void* addr, Int_t size, Int_t fMemFd, TA2System* sys )
 #endif
   return;  
 }
+//
+DAQMemMap_t::DAQMemMap_t( ULong_t addr, Int_t size, ULong_t vaddr,
+			  Int_t fMemFd, TA2System* sys )
+: TObject()  
+{
+  fPerm = PROT_READ | PROT_WRITE;
+  fFlags = MAP_SHARED; 
+  fPhysAddr = (void*)addr; 
+  fSize = size;
+  fSys = sys;
+  fVirtAddr = (void*)vaddr;
+  return;  
+}
 
 //----------------------------------------------
 
@@ -43,5 +57,3 @@ DAQMemMap_t::~DAQMemMap_t()
 
   return; 
 }
-
-ClassImp(DAQMemMap_t)               // Root linkage

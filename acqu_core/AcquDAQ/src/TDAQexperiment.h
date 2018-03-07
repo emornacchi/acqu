@@ -47,7 +47,10 @@
 //--Rev 	JRM Annand   22nd Sep 2013  Add VUPROMT, remove SlowCtrl thread
 //--Rev 	JRM Annand   24nd Sep 2013  Don't start ctrl thread if slave
 //                                          End-run scaler read for slaves
-//--Update	JRM Annand   29nd Mar 2014  Slave ev-ID read before scaler read
+//--Rev 	JRM Annand   29nd Mar 2014  Slave ev-ID read before scaler read
+//--Rev 	JRM Annand   14th Oct 2016  Add TDAQ_VP2ExX86_64
+//--Rev 	JRM Annand    3rd Nov 2016  Add TVME_V785
+//--Update	JRM Annand   19th Oct 2017  Ensure add TVME_V1290,TDAQ_SIS1100
 //
 //--Description
 //                *** AcquDAQ++ <-> Root ***
@@ -136,6 +139,7 @@ class TDAQexperiment : public TA2System {
   UInt_t fNEvent;                   // event number
   UInt_t fDataHeader;               // data header either Mk2 or Mk1
   Int_t fInitLevel;                 // hardware initialisation
+  UInt_t fTimeOut;                  // timeout wait for Supervisor end run
   Bool_t fIsSwap;                   // byte-swap data? big/little endian
   Bool_t fIsSlowCtrl;               // any slow-control functions?
   Bool_t fIsCtrl;                   // DAQ control enabled (run start/stop)?

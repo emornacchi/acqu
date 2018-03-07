@@ -16,6 +16,7 @@
 #include "TDAQexperiment.h"
 //#include "TDAQmemmap.h"
 
+ClassImp(TVME_CBD8210)
 
 enum { ECBD_XXX=200, ECBD_YYY };
 static Map_t kCBDKeys[] = {
@@ -33,6 +34,7 @@ TVME_CBD8210::TVME_CBD8210( Char_t* name, Char_t* file, FILE* log,
   fCtrl = new TDAQcontrol( this );         // tack on control functions
   fType = EDAQ_SCtrl;                      // secondary controller
   AddCmdList( kCBDKeys );                  // CBD-specific setup commands
+  fIsIRQEnabled = kFALSE;
 }
 
 //-----------------------------------------------------------------------------
@@ -64,16 +66,18 @@ void TVME_CBD8210::PostInit( )
   // If not do the default here
   if( fIsInit ) return;
   if( !fReg ){
-    fMaxReg = 2;
-    fReg = new void*[fMaxReg];
-    fDW = new Int_t[fMaxReg];
-    fData = new UInt_t[fMaxReg];
-    fAM = new Int_t[fMaxReg];
+    fNreg = fMaxReg = 2;
+    fReg = new void*[fNreg];
+    fDW = new Int_t[fNreg];
+    fData = new UInt_t[fNreg];
+    fAM = new Int_t[fNreg];
+    fIsWrt = new Bool_t[fNreg];
     fReg[0] = ( (Char_t*)fBaseAddr + 0xe802 );
     fReg[1] = ( (Char_t*)fBaseAddr + 0xe812 );
     fDW[0] = fDW[1] = 2;
     //    fAM[0] = fAM[1] = 0x9;
     fAM[0] = fAM[1] = EVME_A24;
+    fIsWrt[0] = fIsWrt[1] = false;
   }
   //fCSR = (UShort_t*)fReg[0]; // Baya: moved after TVMEmodule::PostInit();
   //fIFR = (UShort_t*)fReg[1];
@@ -83,4 +87,4 @@ void TVME_CBD8210::PostInit( )
   return;
 }
 
-ClassImp(TVME_CBD8210)
+

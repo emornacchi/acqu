@@ -47,7 +47,11 @@
 //--Rev 	JRM Annand   22nd Sep 2013  Add VUPROMT, remove SlowCtrl thread
 //--Rev 	JRM Annand   24nd Sep 2013  Don't start ctrl thread if slave
 //                                          End-run scaler read for slaves
-//--Update	JRM Annand   29nd Mar 2014  Slave ev-ID read before scaler read
+//--Rev 	JRM Annand   29nd Mar 2014  Slave ev-ID read before scaler read
+//--Rev 	JRM Annand   14th Oct 2016  Add TDAQ_VP2ExX86_64
+//--Rev 	JRM Annand    3rd Nov 2016  Add TVME_V785
+//--Update	JRM Annand   19th Oct 2017  Ensure add TVME_V1290,TDAQ_SIS1100
+
 //
 //--Description
 //                *** AcquDAQ++ <-> Root ***
@@ -66,11 +70,16 @@
 //
 #include "TDAQ_V2718.h"
 #include "TDAQ_KPhI686.h"
+#include "TDAQ_VPE2xX86_64.h"      // Concurrent VP2 X86_64 SBC
+#include "TDAQ_VPE2xX86_64A.h"      // Concurrent VP2 X86_64 SBC
+#include "TDAQ_SIS1100.h"          // SIS 1100/3100
 #include "TVME_CBD8210.h"
 #include "TVME_V792.h"
 #include "TVME_V775.h"
+#include "TVME_V785.h"
 #include "TVME_V874.h"
 #include "TVME_V1190.h"
+#include "TVME_V1290.h"
 #include "TCAMACmodule.h"
 #include "TCAMAC_4508.h"
 #include "TCAMAC_2373.h"
@@ -98,12 +107,13 @@
 #include "TVME_V965.h"
 #include "TVME_VITEC.h"
 
+ClassImp(TDAQexperiment)
 
 // recognised setup keywords
 enum { EExpModule, EExpControl, EExpIRQCtrl, EExpStartCtrl, EExpDescription,
        EExpDataOut, EExpEvCnt, EExpDesc, EExpFName, EExpRunStart,
        EExpLocalAR, EExpMk1DataFormat, EExpSynchCtrl, EExpResetCtrl,
-       EExpEventIDSend, EExpEventIDMaster };
+       EExpEventIDSend, EExpEventIDMaster, EExpEndTimeOut };
 static Map_t kExpKeys[] = {
   {"Control:",       EExpControl},         // mode of operator control
   {"Module:",        EExpModule},          // add electronic module
@@ -119,6 +129,8 @@ static Map_t kExpKeys[] = {
   {"Reset-Ctrl:",    EExpResetCtrl},       // reset current control module
   {"EventID-Send:",  EExpEventIDSend},     // module to send event ID to remote
   {"EventID-Master:",EExpEventIDMaster},   // has control of the event ID
+  {"RunEndTimeOut:", EExpEndTimeOut},      // 
+//--Update      JRM Annand   24th Sep 2013 set fIRQMod from exp->PostInit()
   {NULL,              -1}
 };
 
@@ -164,9 +176,12 @@ TDAQexperiment::TDAQexperiment( const Char_t* name, const Char_t* input, const C
   // default strings
   strcpy( fRunDesc, "AcquDAQ Experimental Data, in MkII format\n" );
   strcpy( fFileName, "AcquDAQ" );
+  fIRQThread = NULL;                 // ensure thread pointers NULLed
+  fSlowCtrlThread = NULL;
+  fDAQCtrlThread = NULL;
+  fStoreDataThread = NULL;
   fRunStart = -1;
-  fIRQThread = 0;
-  fDAQCtrlThread = 0;
+  fTimeOut = 0;                     // don't apply any timeout
 }
 
 //-----------------------------------------------------------------------------
@@ -289,6 +304,12 @@ void TDAQexperiment::SetConfig(Char_t* line, Int_t key )
     // Switch data format to AcquRoot Mk1. Default is Mk2 AcquRoot
     fDataHeader = EDataBuff;
     break;
+  case EExpEndTimeOut:
+    // set Supervisor timeout (in usleep() to wait for end condition
+    // apply when running single DAQ node to avoid end-run lockup
+    if( sscanf(line,"%d",&fTimeOut) != 1 )
+      PrintError(line,"<Parse Time Out specification");
+    break;
   default:
     PrintError(line,"<Unrecognised configuration keyword>");
     break;
@@ -363,6 +384,7 @@ if (fInitLevel != 2) //<<------------------------------- Baya
   }
   if( fStartMod ) fSupervise->SetTrigMod( fStartMod );
   if( fIRQMod ) fSupervise->SetIRQMod( fIRQMod );
+  if( fTimeOut ) fSupervise->SetTimeOut( fTimeOut );
 
   // Data storage
   if( fStore ) fStore->PostInit();
@@ -401,6 +423,18 @@ void TDAQexperiment::AddModule( Char_t* line )
     // KPH, Pentium M based, SBC VMEbus controller (primary controller)
     mod = new TDAQ_KPhI686( name, file, fLogStream, line);
     break;
+  case EVPE2xX86_64:
+    // Concurrent quad X86_64, SBC VMEbus controller (primary controller)
+    mod = new TDAQ_VPE2xX86_64( name, file, fLogStream, line);
+    break;
+  case EVPE2xX86_64A:
+    // Concurrent quad X86_64, SBC VMEbus controller (primary controller)
+    mod = new TDAQ_VPE2xX86_64A( name, file, fLogStream, line);
+    break;
+  case ESIS_1100:
+    // SIS 1100/3100 Optical PCI - VME link
+    mod = new TDAQ_SIS1100( name, file, fLogStream, line);
+    break;
   case EVMEbus:
     // Generic VMEbus module
     mod = new TVMEmodule( name, file, fLogStream, line);
@@ -429,13 +463,21 @@ void TDAQexperiment::AddModule( Char_t* line )
     // VMEbus - CAEN 32 channel TDC
     mod = new TVME_V775( name, file, fLogStream, line );
     break;
+  case ECAEN_V785:
+    // VMEbus - CAEN 32 channel VDC
+    mod = new TVME_V785( name, file, fLogStream, line );
+    break;
   case ECAEN_V874:
     // VMEbus - CAEN 4 channel TAPS module
     mod = new TVME_V874( name, file, fLogStream, line );
     break;
   case ECAEN_V1190:
-    // VMEbus - CAEN 128 channel, multi-hit TDC
+    // VMEbus - CAEN 128 channel, multi-hit TDC, 100 ps resolution
     mod = new TVME_V1190( name, file, fLogStream, line );
+    break;
+  case ECAEN_V1290:
+    // VMEbus - CAEN 32 channel, multi-hit TDC, 25 ps resolution
+    mod = new TVME_V1290( name, file, fLogStream, line );
     break;
   case ECATCH_TDC:
     // VMEbus/CATCH - 128 channel, multi-hit TDC
@@ -676,6 +718,7 @@ void TDAQexperiment::RunIRQ()
   //
   if( !(fNADC + fNScaler) ){
     printf("Warning: <RunIRQ: no IRQ modules loaded>\n");
+    //return;
   }
   TIter nexta( fADCList );
   TIter nexts( fScalerList );
@@ -1046,5 +1089,3 @@ void TDAQexperiment::PostReset( )
   }
   // anything else here
 }
-
-ClassImp(TDAQexperiment)

@@ -25,7 +25,10 @@
 //--Rev         JRM Annand    2nd Mar 2013 VADC/VScalers Mk2 header counting
 //--Rev         JRM Annand   10th Jul 2013 V874 config
 //--Rev         JRM Annand    9th Sep 2013 mod to end-run...wait for expt
-//--Update      JRM Annand   24th Sep 2013 set fIRQMod from exp->PostInit()
+//--Rev         JRM Annand   24th Sep 2013 set fIRQMod from exp->PostInit()
+//--Rev         JRM Annand    8th Nov 2016 timeout in ExecEnd() procedure
+//--Update      JRM Annand   25th Nov 2017 ensure fNADC,fNScaler zero'ed
+//
 //--Description
 //                *** AcquDAQ++ <-> Root ***
 // DAQ for Sub-Atomic Physics Experiments.
@@ -46,9 +49,11 @@
 #include "TVME_V874.h"
 
 #include <time.h>
-
+//#include <iostream>
+//#include <string>
 #include <sstream>
 
+ClassImp(TDAQsupervise)
 
 // Modes of entering control info to DAQ
 static Map_t kExpCtrl[] = {
@@ -109,6 +114,7 @@ TDAQsupervise::TDAQsupervise( Char_t* name,  TDAQexperiment* exp,
   fIsRunTerm = kTRUE;
   fIsBufferDump = kFALSE;
   fIsAuto = kFALSE;
+  fTimeOut = 0;
   if( (exp->IsCtrl()) && (!fIRQMod) )
     PrintError(name,"<DAQ control enabled, but no control hardware found>",
 	       EErrFatal);
@@ -543,7 +549,19 @@ void TDAQsupervise::ExecEnd(  )
     return;
   }
   fIsRunTerm = kTRUE;              // flag run finished
-  while( !fEXP->IsRunTerm() ) usleep(1);  // wait for experiment
+  // Check if any timeout specified
+  // If not wait indefinitely until TDAQexperiment says ready
+  // Only set timeout if running single DAQ node
+  if(fTimeOut){
+    for(UInt_t i=0; i<fTimeOut; i++){
+      usleep(1);
+      if(fEXP->IsRunTerm())
+	break;
+    }
+  }
+  else{
+    while( !fEXP->IsRunTerm() ) usleep(1);// wait for experiment
+  }
   if( fTrigMod ) fTrigMod->EndTrigCtrl(); // stop & disable triggers
   DAQDisable();                           // disable DAQ controller
   sleep(1);                               // pause allow expt flush buffer
@@ -743,7 +761,7 @@ void TDAQsupervise::CreateHeader( void* buff )
   h->fNADCModule = fEXP->GetNADC();               // # ADC modules
   h->fNScalerModule = fEXP->GetNScaler();         // # Scaler modules
   h->fRecLen = fEXP->GetOutBuff()->GetLenBuff();  // Data record length
-  // Just in case these get initialised with crap
+  // In case these are initialised with crap...re-added 25/11/17
   h->fNADC = 0;
   h->fNScaler = 0;
   //
@@ -928,9 +946,12 @@ void TDAQsupervise::SetTCSRunMode(UInt_t runmode)
   while( (mod = (TDAQmodule*)nextM()) ){
     if( mod->InheritsFrom("TVME_CATCH_TCS") ){
       ((TVME_CATCH_TCS*)mod)->SetRunMode(runmode);
-      stringstream ss;
-      ss << " Set TCS runmode to " << runmode << endl;
-      PutString(ss.str().c_str());         // output message
+      Char_t tcsstr[32];
+      //stringstream ss;
+      //ss << " Set TCS runmode to " << runmode << endl;
+      sprintf(tcsstr,"Set TCS runmode to %d\n",runmode);
+      //PutString(ss.str().c_str());         // output message
+      PutString(tcsstr);         // output message
       return;
     }
   }
@@ -1040,4 +1061,4 @@ void TDAQsupervise::ConfigV874(Char_t* line)
   PutString(" No V874 Module found\n");         // output message
   return;
 }
-ClassImp(TDAQsupervise)
+

@@ -21,6 +21,7 @@
 #include "TDAQexperiment.h"
 #include "ARFile_t.h"
 
+ClassImp(TVME_CATCH_TCS)
 
 static Map_t kVME_CATCH_TCSKeys[] = {
   {"TCSFile:",    ETCSFile}, 
@@ -256,72 +257,116 @@ void TVME_CATCH_TCS::ReConfig( )
   // for acqu 3v7 running on the old LynxOS systems
   // Mickey-Mouse solution just to get running
   WrtCatch(0x28, 0x18800);
+  usleep(1);
+
   // REC 0
   WrtCatch(0x28, 0x80080);
+  usleep(1);
   WrtCatch(0x28, 0xd0001);
+  usleep(1);
   // REC 1
   WrtCatch(0x28, 0x80480);
+  usleep(1);
   WrtCatch(0x28, 0xd0101);
+  usleep(1);
   // REC 2
   WrtCatch(0x28, 0x80880);
+  usleep(1);
   WrtCatch(0x28, 0xd0201);
+  usleep(1);
   // REC 3
   WrtCatch(0x28, 0x80c80);
+  usleep(1);
   WrtCatch(0x28, 0xd0301);
+  usleep(1);
   // REC 4
   WrtCatch(0x28, 0x81080);
+  usleep(1);
   WrtCatch(0x28, 0xd0401);
+  usleep(1);
   // REC 5
   WrtCatch(0x28, 0x81480);
+  usleep(1);
   WrtCatch(0x28, 0xd0501);
+  usleep(1);
   // REC 6
   WrtCatch(0x28, 0x81880);
+  usleep(1);
   WrtCatch(0x28, 0xd0601);
+  usleep(1);
   // REC 7
   WrtCatch(0x28, 0x81c80);
+  usleep(1);
   WrtCatch(0x28, 0xd0701);
+  usleep(1);
   // REC 8
   WrtCatch(0x28, 0x82080);
+  usleep(1);
   WrtCatch(0x28, 0xd0801);
+  usleep(1);
   // REC 9
   WrtCatch(0x28, 0x82480);
+  usleep(1);
   WrtCatch(0x28, 0xd0901);
+  usleep(1);
   // REC 10
   WrtCatch(0x28, 0x82880);
+  usleep(1);
   WrtCatch(0x28, 0xd0a01);
+  usleep(1);
   // REC 11
   WrtCatch(0x28, 0x82c80);
+  usleep(1);
   WrtCatch(0x28, 0xd0b01);
+  usleep(1);
   // REC 12
   WrtCatch(0x28, 0x83080);
+  usleep(1);
   WrtCatch(0x28, 0xd0c01);
+  usleep(1);
   // REC 13
   WrtCatch(0x28, 0x83480);
+  usleep(1);
   WrtCatch(0x28, 0xd0d01);
+  usleep(1);
   // REC 14
   WrtCatch(0x28, 0x83880);
+  usleep(1);
   WrtCatch(0x28, 0xd0e01);
+  usleep(1);
   // REC 15
   WrtCatch(0x28, 0x83c80);
+  usleep(1);
   WrtCatch(0x28, 0xd0f01);
+  usleep(1);
   // REC 16
   WrtCatch(0x28, 0x84080);
+  usleep(1);
   WrtCatch(0x28, 0xd1001);
+  usleep(1);
   // REC 17
   WrtCatch(0x28, 0x84480);
+  usleep(1);
   WrtCatch(0x28, 0xd1101);
+  usleep(1);
   // Reset FE
   // WrtCatch(0x28, 0x20001  # declare MainDAQ as running
   WrtCatch(0x28, 0x10800);
+  usleep(1);
   // configure controller
   // deadtime
   WrtCatch(0x64, 0x10);
+  usleep(1);
   WrtCatch(0x84, 0x4);
+  usleep(1);
   WrtCatch(0xA4, 0x640);
+  usleep(1);
   // start run: only MainDAQ
   WrtCatch(0x44, 0xfffff);
+  usleep(1);
   // see also SetRunMode when changing this value!
   WrtCatch(0x24, 0x101);
+  usleep(1);
   return;
 }
-ClassImp(TVME_CATCH_TCS)
+
