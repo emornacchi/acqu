@@ -100,6 +100,7 @@ class	TA2GoAT	: public TA2AccessSQL
   //Tagger
   Int_t		nTagged;
   Double_t*	taggedEnergy;
+  Double_t*	multiHits;
   Int_t*	taggedChannel;
   Double_t*	taggedTime;
   Int_t         saveTaggedEnergy;
