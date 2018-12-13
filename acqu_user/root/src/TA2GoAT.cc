@@ -45,6 +45,7 @@ TA2GoAT::TA2GoAT(const char* Name, TA2Analysis* Analysis) : TA2AccessSQL(Name, A
 							    taggedEnergy(0),
 							    taggedChannel(0),
 							    taggedTime(0),
+							    multiHits(0),
 							    saveTaggedEnergy(0),
 							    plane(0),
 							    edge(0),
@@ -280,6 +281,7 @@ void    TA2GoAT::PostInit()
   taggedChannel    = new Int_t[TA2GoAT_MAX_TAGGER];
   taggedTime       = new Double_t[TA2GoAT_MAX_TAGGER];
   taggedEnergy     = new Double_t[TA2GoAT_MAX_TAGGER];
+  multiHits        = new Double_t[TA2GoAT_MAX_TAGGER];
 
   NaIADCs          = new Int_t[TA2GoAT_MAX_HITS];
   NaIADCsRaw       = new Int_t[720];
@@ -384,6 +386,7 @@ void    TA2GoAT::PostInit()
   treeTagger->Branch("nTagged", &nTagged,"nTagged/I");
   treeTagger->Branch("taggedChannel", taggedChannel, "taggedChannel[nTagged]/I");
   treeTagger->Branch("taggedTime", taggedTime, "taggedTime[nTagged]/D");
+  treeTagger->Branch("MultiHits", multiHits, "multiHits[nTagged]/D");
   if(saveTaggedEnergy)
     {
       treeTagger->Branch("taggedEnergy", taggedEnergy, "taggedEnergy[nTagged]/D");
@@ -919,6 +922,7 @@ void    TA2GoAT::Reconstruct()
 	    {
 	      taggedChannel[i] = (fLadder->GetHitsAll())[i];
 	      taggedTime[i] = (fLadder->GetTimeAll())[i];
+	      multiHits[i] = 0.;
 	      taggedEnergy[i] = electron_E - ChToE[taggedChannel[i]];
 	    }
 	}
@@ -932,6 +936,7 @@ void    TA2GoAT::Reconstruct()
 		{
 		  taggedChannel[nTagged+i] 	= (fLadder->GetHitsM(m))[i];
 		  taggedTime[nTagged+i]	= (fLadder->GetTimeORM(m))[i];
+		  multiHits[nTagged+i] = m;
 		  taggedEnergy[nTagged+i] = electron_E - ChToE[taggedChannel[nTagged+i]];
 		}
 	      nTagged	+= fLadder->GetNhitsM(m);
@@ -1300,6 +1305,7 @@ void    TA2GoAT::Reconstruct()
 
   taggedChannel[nTagged] 	  = EBufferEnd;
   taggedTime[nTagged] 	  = EBufferEnd;
+  multiHits[nTagged] 	          = EBufferEnd;
   taggedEnergy[nTagged] 	  = EBufferEnd;
 
   NaIADCs[nNaIADCs] 	      = EBufferEnd;
