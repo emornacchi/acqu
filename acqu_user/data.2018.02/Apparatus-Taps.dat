@@ -5,9 +5,9 @@
 #
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #Detector systems in TAPS apparatus
-#Detector: BaF2          TA2TAPS_BaF2		Detector-BaF2.dat
-Detector: BaF2          TA2TAPS_BaF2		Detector-BaF2-PbWO4.dat
-Detector: Veto          TA2TAPS_Veto		Detector-Veto.dat
+#Detector: BaF2          TA2TAPS_BaF2		data.2018.02/Detector-BaF2.dat
+Detector: BaF2          TA2TAPS_BaF2		data.2018.02/Detector-BaF2-PbWO4.dat
+Detector: Veto          TA2TAPS_Veto		data.2018.02/Detector-Veto.dat
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -32,7 +32,7 @@ TAPS_SimpleReconstruct: 0
 #DeltaE vs. E between Veto and BaF2-Clusters configuration. When a cut is set
 #active, the appendant TCut with name specified below must exist in ROOT file.
 TAPS_dEvE_Active:  1
-TAPS_dEvE_Cuts:  data/cuts/TAPS_Cut_DeltaE-E.root
+TAPS_dEvE_Cuts:  data.2018.02/cuts/TAPS_Cut_DeltaE-E.root
 TAPS_dEvE_Proton:   1
 TAPS_dEvE_ChPion:   0
 TAPS_dEvE_Electron: 0
@@ -48,8 +48,8 @@ TAPS_dEvE_Proton_CutName:    CutProton
 #TAPS and Tagger time difference.
 #If TAPS_TOF_onlyPhoton: 1 then all uncharged hits are photons. You might
 #define a neutron-TOF-cut, then set TAPS_TOF_onlyPhoton: 0
-TAPS_TOF_Cuts:  data/cuts/TAPS_Cut_TOF.root
-#TAPS_TOF_Cuts:  data/cuts/TAPS_Cut_TOF_Rev.root
+TAPS_TOF_Cuts:  data.2018.02/cuts/TAPS_Cut_TOF.root
+#TAPS_TOF_Cuts:  data.2018.02/cuts/TAPS_Cut_TOF_Rev.root
 TAPS_TOF_Nucleon:     1
 TAPS_TOF_onlyPhoton:  1
 TAPS_TOF_Nucleon_CutName:  CutNucleon

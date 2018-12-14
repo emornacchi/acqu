@@ -49,22 +49,22 @@ MultiADC: 1 10000 10100
 #
 ## Stuff to monitor time dependence of counting rates and the hit pattern
 ## coming from the trigger box....the parameter is the setup file name
-RateMonitor: data/monitor/Rate-CBTaggTAPS.dat
-BitPattern:  data/monitor/Trig-Pattern.dat
+RateMonitor: data.2018.02/monitor/Rate-CBTaggTAPS.dat
+BitPattern:  data.2018.02/monitor/Trig-Pattern.dat
 ##
 ## Apparatus setup....
 ## Raw analysis may be performed without Apparati
 ##                  Name      Class                    Setup file
-Apparatus:	    TAGG      TA2Tagger		       Apparatus-Tagger883.dat
-Apparatus:	    CB	      TA2CentralApparatus      Apparatus-CentApp.dat
-Apparatus:	    TAPS      TA2Taps		       Apparatus-Taps.dat
+Apparatus:	    TAGG      TA2Tagger		       data.2018.02/Apparatus-Tagger883.dat
+Apparatus:	    CB	      TA2CentralApparatus      data.2018.02/Apparatus-CentApp.dat
+Apparatus:	    TAPS      TA2Taps		       data.2018.02/Apparatus-Taps.dat
 ##
 ## Turn on apparatus-level reconstruction
 Reconstruct-Analysis:
 ##
 ## Specify physics analysis
 ##                  Name      Class                    Config File
-Physics-Analysis:   Phys      TA2MyCaLib	       Physics-CaLib.dat
+Physics-Analysis:   Phys      TA2MyCaLib	       data.2018.02/Physics-CaLib.dat
 ##
 ## Do some post initialisation...usually necessary
 Initialise:

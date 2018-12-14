@@ -26,7 +26,7 @@
 ## NB with TAPS the number of ADCs = 29001
 ##-----------------------------------------------------------------------
 # Use DirectIO mode (experimental)
-#UseDirectIO:
+UseDirectIO:
 ##
 ## Batch mode operation...redirect output directory for log files etc.
 BatchDir: log/
@@ -41,7 +41,7 @@ Branch:	  Mk1_Header            120000
 ## List of Tree files which will form the input TChain for --offline running
 ##
 ## Directory to save any created ROOT files (include final / )
-Directory: /media/edo/A2Compton/calib_out/2018-02_compton/
+Directory: /home/mornacch/work2/CaLib_out/
 ##
 ## Manual setup of ADC, Scaler, bits-in-ADC numbers
 ## Usually needed only where experiment header information is not given
@@ -63,7 +63,7 @@ Directory: /media/edo/A2Compton/calib_out/2018-02_compton/
 Analysis: TA2UserAnalysis
 ##
 ## Analysis setup file
-AnalysisSetup: Analysis-CaLib.dat
+AnalysisSetup: data.2018.02/Analysis-CaLib.dat
 ##
 ## Specify non-clearing scalers
 #ScalerNoClear: 12 139
@@ -77,4 +77,4 @@ AnalysisSetup: Analysis-CaLib.dat
 ##
 ## Online running...setup of data server
 ## This is ignored for offline running and may be left in
-ServerSetup: data/Server-CaLib.dat
+ServerSetup: data.2018.02/Server-CaLib.dat

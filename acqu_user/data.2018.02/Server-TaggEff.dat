@@ -75,22 +75,20 @@ Stream-Spec:	File	Mk2	0	327680	32	0	400
 #File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21558.dat.xz     0       0 #Copp
 #File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21559.dat.xz     0       0 #BKG6
 ##Set7 - bkg after every set + different tests
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21590.dat.xz     0       0 #BKG1
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21591.dat.xz     0       0 #Copp - threshold @250mV
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21592.dat.xz     0       0 #BKG2
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21593.dat.xz     0       0 #Copp short - threshold @500mV
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21594.dat.xz     0       0 #BKG3
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21595.dat.xz     0       0 #Moel - threshold @1V
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21596.dat.xz     0       0 #Moel short - NO amplifier and threshold @100mV
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21597.dat.xz     0       0 #BKG4
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21598.dat.xz     0       0 #PARA
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21599.dat.xz     0       0 #BKG5
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21600.dat.xz     0       0 #PERP
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21601.dat.xz     0       0 #BKG6
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21602.dat.xz     0       0 #Copp
-#File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21603.dat.xz     0       0 #BKG7
-##
-File-Name: /media/edo/storage1/2018-02_Tagger-Tests/TaggEff_21703.dat.xz     0       0 
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21590.dat.xz     0       0 #BKG1
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21591.dat.xz     0       0 #Copp - threshold @250mV
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21592.dat.xz     0       0 #BKG2
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21593.dat.xz     0       0 #Copp short - threshold @500mV
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21594.dat.xz     0       0 #BKG3
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21595.dat.xz     0       0 #Moel - threshold @1V
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21596.dat.xz     0       0 #Moel short - NO amplifier and threshold @100mV
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21597.dat.xz     0       0 #BKG4
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21598.dat.xz     0       0 #PARA
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21599.dat.xz     0       0 #BKG5
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21600.dat.xz     0       0 #PERP
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21601.dat.xz     0       0 #BKG6
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21602.dat.xz     0       0 #Copp
+File-Name: /media/edo/storage/2018-02_Compton/TaggEff_21603.dat.xz     0       0 #BKG7
 #
 #
 ##

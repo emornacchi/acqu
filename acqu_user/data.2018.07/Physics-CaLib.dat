@@ -12,7 +12,7 @@ Reconstruct:
 #
 
 # General:      dbhost     dbname                  dbuser      dbpass        calibration
-Use-CaLib:      blaster    CaLib_2013_10-Present   calib       basel10       2018-03_Compton
+Use-CaLib:      blaster    CaLib_2013_10-Present   calib       basel10       2018-07_Compton
 #
 #
 # tagger calib:     time    efficiency (0=off/1=on)
@@ -50,15 +50,15 @@ CaLib-TAPS-Time-Cut-MaxRing: 4
 # Have dummy TimeWalk: 0 0.000000000 0.0000000000 0.00000000 0.0000000 entries in your Detector-NaI.dat file
 
 # CB energy calibration
-#CaLib-CB-Energy: 1
+CaLib-CB-Energy: 1
 # CB time calibration
 CaLib-CB-Time: 1
 # TAPS time calibration
-#CaLib-TAPS-Time: 1
+CaLib-TAPS-Time: 1
 # PID time calibration
-#CaLib-PID-Time: 1
+CaLib-PID-Time: 1
 # Veto time
-#CaLib-Veto-Time: 1
+CaLib-Veto-Time: 1
 
 ### STEP FOUR
 
@@ -73,7 +73,7 @@ CaLib-CB-Time: 1
 #CaLib-CB-Quad: 1       105      160      280      400
 
 # tagger time calibration
-#CaLib-Tagger-Time: 1
+CaLib-Tagger-Time: 1
 
 #### STEP FIVE
 

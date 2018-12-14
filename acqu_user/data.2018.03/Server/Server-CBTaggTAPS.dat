@@ -53,10 +53,8 @@ Stream-Spec:	File	Mk2	0	327680	32	0	400
 #File-Name:	/home/edo/analysis/data/2018-03_compton/CBTaggTAPS_21864.dat		0       0 # 4.5nA
 ########################################################################################################
 ## Test Moeller Copper with paddle
-#File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21957.dat.xz		0       0 ## 9nA copper
-#File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21958.dat.xz		0       0 ## 4.5nA Moeller
-#File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21959.dat.xz		0       0 ## 4nA Moeller
-########################################################################################################
-File-Name: /media/edo/storage/2018-07_Compton/CBTaggTAPS_24604.dat.xz
+File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21957.dat.xz		0       0 ## 9nA copper
+File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21958.dat.xz		0       0 ## 4.5nA Moeller
+File-Name:	/media/edo/storage/2018-03_Compton/CBTaggTAPS_21959.dat.xz		0       0 ## 4nA Moeller
 ##
 ## END

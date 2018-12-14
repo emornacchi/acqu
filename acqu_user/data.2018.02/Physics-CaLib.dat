@@ -18,7 +18,7 @@ Use-CaLib:      blaster    CaLib_2013_10-Present   calib       basel10       201
 # tagger calib:     time    efficiency (0=off/1=on)
 Use-CaLib-TAGG:     1       0
 # CB calib:         energy  time    timewalk    quadr. energy    led  (0=off/1=on)
-Use-CaLib-CB:       1       1       0           0                0 
+Use-CaLib-CB:       1       1       1           0               0 
 # TAPS calib:       energy  time    quadr. energy   LED thr.    CFD thr.  (0=off/1=on)
 Use-CaLib-TAPS:     1       1       0               0           0
 # PID calib:        phi     energy  time  (0=off/1=on)
@@ -54,11 +54,11 @@ CaLib-CB-Energy: 1
 # CB time calibration
 CaLib-CB-Time: 1
 # TAPS time calibration
-#CaLib-TAPS-Time: 1
+CaLib-TAPS-Time: 1
 # PID time calibration
-#CaLib-PID-Time: 1
+CaLib-PID-Time: 1
 # Veto time
-#CaLib-Veto-Time: 1
+CaLib-Veto-Time: 1
 
 ### STEP FOUR
 
@@ -70,10 +70,10 @@ CaLib-CB-Time: 1
 
 # CB quadratic energy correction
 #              on/off  pi0_min  pi0_max  eta_min  eta_max
-#CaLib-CB-Quad: 1       100      150      480      620
+#CaLib-CB-Quad: 1       105      160      280      400
 
 # tagger time calibration
-#CaLib-Tagger-Time: 1
+CaLib-Tagger-Time: 1
 
 #### STEP FIVE
 
@@ -82,30 +82,21 @@ CaLib-CB-Time: 1
 # CB time walk calibration
 # For EPT, use prompt_min>prompt_max, which disables any kind of tagging information
 #              on/off  pi0_min  pi0_max  prompt_min  prompt_max  bg1_min  bg1_max  bg2_min  bg2_max  mm_min  mm_max
-#CaLib-CB-Walk: 1       120      150      5           -5          50     -20        20       -50      -100    100
+#CaLib-CB-Walk: 1       110      160      10           20          -50     -20        20       50      -100    100
 
 # TAPS energy calibration
 #CaLib-TAPS-Energy: 1
 
 # TAPS LED calibration
-#CaLib-TAPS-LED: 1
+#CaLib-CB-TAPS-LED: 1
 
 
 ####
 
-# TAPS quadratic energy correction
-#                on/off  pi0_min  pi0_max  eta_min  eta_max
-#CaLib-TAPS-Quad: 1       110      160      500      600
-
-
-# TAPS PSA calibration
-#CaLib-TAPS-PSA: 1
-
-
-
 # PID energy calibration
 #CaLib-PID-Energy: 1
-#CaLib-PID-Energy: 1       120      150      -20           0          -70     -40        20       50      -100    100
+#| &              |on/off| & | pi0_min  pi0_max  prompt_min  prompt_max  bg1_min  bg1_max  bg2_min  bg2_max mm_min  mm_max| \\
+#CaLib-PID-Energy: 1          110      160      -10           0          -100     -20        20       10      -50    30
 
 
 
