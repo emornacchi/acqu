@@ -41,8 +41,8 @@ Branch:	  Mk1_Header            120000
 ## List of Tree files which will form the input TChain for --offline running
 ##
 ## Directory to save any created ROOT files (include final / )
-Directory:    ./
-#Directory:    /media/edo/A2Compton/acqu_out/2018-03_compton/
+#Directory:    ./
+Directory:    /home/mornacch/work/2018.07_Compton/
 ##
 ## Manual setup of ADC, Scaler, bits-in-ADC numbers
 ## Usually needed only where experiment header information is not given

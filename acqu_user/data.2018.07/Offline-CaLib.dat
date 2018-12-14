@@ -41,7 +41,7 @@ Branch:	  Mk1_Header            120000
 ## List of Tree files which will form the input TChain for --offline running
 ##
 ## Directory to save any created ROOT files (include final / )
-Directory: /home/mornacch/work2/CaLib_out/2018.03_Compton/
+Directory: /home/mornacch/work2/CaLib_out/2018.07_Compton/
 ##
 ## Manual setup of ADC, Scaler, bits-in-ADC numbers
 ## Usually needed only where experiment header information is not given
@@ -63,7 +63,7 @@ Directory: /home/mornacch/work2/CaLib_out/2018.03_Compton/
 Analysis: TA2UserAnalysis
 ##
 ## Analysis setup file
-AnalysisSetup: data.2018.03/Analysis-CaLib.dat
+AnalysisSetup: data.2018.07/Analysis-CaLib.dat
 ##
 ## Specify non-clearing scalers
 #ScalerNoClear: 12 139
@@ -77,4 +77,4 @@ AnalysisSetup: data.2018.03/Analysis-CaLib.dat
 ##
 ## Online running...setup of data server
 ## This is ignored for offline running and may be left in
-ServerSetup: data.2018.03/Server-CaLib.dat
+ServerSetup: data.2018.07/Server-CaLib.dat

@@ -41,8 +41,7 @@ Branch:	  Mk1_Header            120000
 ## List of Tree files which will form the input TChain for --offline running
 ##
 ## Directory to save any created ROOT files (include final / )
-#Directory:    /media/edo/A2Compton/acqu_out/2018-03_compton/FullDiamond/PERP/
-Directory: ./
+Directory:    /media/edo/A2Compton/acqu_out/2018-03_compton/FullDiamond/PERP/
 #Directory:    /media/edo/A2Compton/acqu_out/2018-03_compton/
 ##
 ## Manual setup of ADC, Scaler, bits-in-ADC numbers
@@ -65,7 +64,7 @@ Directory: ./
 Analysis: TA2UserAnalysis
 ##
 ## Analysis setup file
-AnalysisSetup: data/Analysis-CBTaggTAPS.dat
+AnalysisSetup: data.2018.03/Analysis-CBTaggTAPS.dat
 ##
 ## Specify non-clearing scalers
 #ScalerNoClear: 12 139
