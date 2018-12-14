@@ -1,0 +1,6 @@
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22683.dat.xz
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22684.dat.xz
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22685.dat.xz
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22689.dat.xz
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22690.dat.xz
+/local/raid0/A2/rundata/2018-03_Compton/CBTaggTAPS_22691.dat.xz
