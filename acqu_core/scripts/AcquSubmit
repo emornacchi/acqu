@@ -9,11 +9,14 @@ use File::Basename qw(basename);
 
 my $filelist = '-';             # default STDIN
 my $outputdir;                  # needs to be provided on cmd line
+my $datadir = 'data';           # useful if you want to submit data from different beamtime - you provide a different name from the data directory
+my $datafile = 'ROOTsetup.dat'; # useful if you want to submit different analysis - eg CaLib and Offline
 my $clean = 0;
 my $help = 0;
 my $directio;
 my $cwd = getcwd;
-my $QSUB_BIN = 'qsub';
+my $QSUB_BIN = 'qsub -q dflt';
+#my $QSUB_BIN = 'qsub -q batch';
 my $ACQUROOT_BIN = which('AcquRoot');
 # parse options
 Getopt::Long::Configure(qw(gnu_getopt));
@@ -24,10 +27,16 @@ GetOptions(
 
 
 # parse arguments
-if (@ARGV==1 || @ARGV==2) {
+if (@ARGV==1 || @ARGV==2 || @ARGV==3 || @ARGV==4) {
   $outputdir = $ARGV[0];
-  if (@ARGV==2) {
+  if (@ARGV==2 || @ARGV==3 || @ARGV==4) {
     $filelist = $ARGV[1];
+    if(@ARGV==3 || @ARGV==4) {
+	$datadir = $ARGV[2];
+	if(@ARGV==4) {
+	    $datafile = $ARGV[3];
+	}
+    }
   }
 } else {
   print_help();
@@ -42,16 +51,18 @@ sub main {
   warn "Warning: Current working directory '$cwd' does not end with 'acqu_user'" unless $cwd =~ /acqu_user$/;
 
   # check for top-level config files
-  my $ROOTsetup = 'data/ROOTsetup.dat';
+  my $ROOTsetup = $datadir . '/' . $datafile;
   my $haveROOTsetup = -f $ROOTsetup ? 1 : 0;
-  my $ROOTsetupMC = 'data/ROOTsetupMC.dat';
+  my $ROOTsetupMC = $datadir . '/' . $datafile;
   my $haveROOTsetupMC = -f $ROOTsetupMC ? 1 : 0;
 
+  printf("Your data directory is: $datadir \n");
+  printf("Your top datafile is: $ROOTsetup \n \n");
+  
   die "Error: Neither $ROOTsetup nor $ROOTsetupMC file found. Either you're in the wrong working directory".
     " or you need to create a symlink to AR.dat or AR-MC.dat (or similar top-entry config file for rundata or MC)".
-    " below the data/ config folder."
+    " below the data/ config folder. Arguments must be <outdir>,<filelist>,<datadir>,<datafile>"
     unless $haveROOTsetup or $haveROOTsetupMC;
-
 
   # data files might use DirectIO mode
   if ($haveROOTsetup) {
@@ -162,6 +173,8 @@ sub submit_file {
   my $ncpus = $inputfile =~ /\.(dat|root)$/ || ($directio && $inputfile =~ /\.xz$/) ? 1 : 2;
   my $rootfile = $inputfile =~ /\.root$/ ? "--rootfile" : ""; # AcquRoot is too stupid to detect this...
 
+  my $filedat = $datadir . '/' . $datafile;
+
   my $basename = basename($inputfile);
   my $user = $ENV{USER};
   # open pipe to qsub
@@ -176,7 +189,6 @@ sub submit_file {
 ##PBS -m b
 ## Send eMail if job ends
 ##PBS -m e
-#PBS -M $user\@kph.uni-mainz.de
 #PBS -V
 #PBS -l walltime=2:00:00
 #PBS -j oe
@@ -185,7 +197,7 @@ sub submit_file {
 #PBS -l ncpus=$ncpus
 echo INPUTFILE: $inputfile
 cd $cwd
-$ACQUROOT_BIN --nolog --batch $rootfile \\
+$ACQUROOT_BIN $filedat  --nolog --batch $rootfile \\
   --batchdir $outputdir/root/ \\
   --directory $outputdir/root/ \\
   --datafile $inputfile
@@ -195,12 +207,13 @@ __BATCHSCRIPT
 
 sub print_help {
   print <<__EOF;
-Usage: AcquSubmit [--clean] <outputdir> [<filelist>|-]
+Usage: AcquSubmit [--clean] <outputdir> [<filelist>|-] [<datadir>|data]
 
 Submit jobs with qsub running AcquRoot on files in provided <filelist>
 (or read it from STDIN), output goes to <outputdir> (will be created
 and must not exist already). Needs to be run from "acqu_user"
-directory with proper data/ symlink config folder.
+directory with proper data/ symlink config folder, or you can provide a different
+data directory ar third argument.
 
 Options:
 
