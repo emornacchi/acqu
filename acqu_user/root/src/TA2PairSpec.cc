@@ -49,15 +49,24 @@ void TA2PairSpec::PostInit( )
 
   fNchannels = fLadder -> GetNelement();
 
-  // Need to distinguish between OLD/NEW tagger, for the decoding.
+  // Need to distinguish between old and new FPD and pre and old recabling. 
+  // Apparently, with the new recabling (happened on March 19th 2018, first day of
+  // Compton March 2018 beamtime) we decided to used 12 vuprom, instead
+  // of 11 (as was for old FPD and new pre recabling). But, due to the
+  // different number of channel, you also need to distinguish new/old FPD.
   // To avoid flag in the config, this can be done using the timestamp
-  // Decided to set day-0 of the new FPD on the 2017-10-01 at 00.00.01
-  isOldFPD = kFALSE;
-  fDay0 = 1506816000; // 2017-10-01 at 00.00.01
+  // Decided to set day-0 of the new recabling on the 2018-03-18 at 00.00.01
+
+  fDecodeCorr = 24;
+  if(fNchannels == 352) 
+    fDecodeCorr = 32;
+
+  isOldCab = kFALSE;
+  fDay0 = 1521331201; // 2018-03-18 at 00.00.01
   fTimeStamp = gAR->GetFileTimeEpoch();
 
   if (fTimeStamp < fDay0)
-    isOldFPD = kTRUE;
+    isOldCab = kTRUE;
   
   // skip TA2Detector PostInit
   TA2DataManager::PostInit();
@@ -103,11 +112,11 @@ void TA2PairSpec::Decode()
     fScalerOpen[i] = fScaler[fLadder->GetScalerIndex()[i]];
   }
   for(UInt_t i=0;i<fNchannels;i++) {
-    if(isOldFPD && (i<=31 || i>=321) )fScalerGated[i] = fScaler[fLadder->GetScalerIndex()[i]+64];
+    if(isOldCab && (i<=31 || i>=fNchannels-fDecodeCorr) )fScalerGated[i] = fScaler[fLadder->GetScalerIndex()[i]+64];
     else fScalerGated[i] = fScaler[fLadder->GetScalerIndex()[i]+96];
   }
   for(UInt_t i=0;i<fNchannels;i++) {
-    if(isOldFPD && (i<=31 || i>=321) ) fScalerGatedDly[i] = fScaler[fLadder->GetScalerIndex()[i]+(2*64)];
+    if(isOldCab && (i<=31 || i>=fNchannels-fDecodeCorr) ) fScalerGatedDly[i] = fScaler[fLadder->GetScalerIndex()[i]+(2*64)];
     else fScalerGatedDly[i] = fScaler[fLadder->GetScalerIndex()[i]+(2*96)];
   }
   
@@ -115,11 +124,11 @@ void TA2PairSpec::Decode()
     fScalerSumOpen[i] = fScalerSum[fLadder->GetScalerIndex()[i]];
   }
   for(UInt_t i=0;i<fNchannels;i++) {
-    if(isOldFPD && (i<=31 || i>=321) ) fScalerSumGated[i] = fScalerSum[fLadder->GetScalerIndex()[i]+64];
+    if(isOldCab && (i<=31 || i>=fNchannels-fDecodeCorr) ) fScalerSumGated[i] = fScalerSum[fLadder->GetScalerIndex()[i]+64];
     else fScalerSumGated[i] = fScalerSum[fLadder->GetScalerIndex()[i]+96];
   }
   for(UInt_t i=0;i<fNchannels;i++) {
-    if(isOldFPD && (i<=31 || i>=321) ) fScalerSumGatedDly[i] = fScalerSum[fLadder->GetScalerIndex()[i]+(2*64)];
+    if(isOldCab && (i<=31 || i>=fNchannels-fDecodeCorr) ) fScalerSumGatedDly[i] = fScalerSum[fLadder->GetScalerIndex()[i]+(2*64)];
     else fScalerSumGatedDly[i] = fScalerSum[fLadder->GetScalerIndex()[i]+(2*96)];
   }  
 }

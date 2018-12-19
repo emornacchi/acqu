@@ -11,10 +11,11 @@ protected:
   TA2Ladder* fLadder;	// Ladder
 private:
   UInt_t fNchannels;
-  // To distinguish old/new FPD
+  // To distinguish old/new FPD pre/post recabling
   UInt_t fDay0; 
   UInt_t fTimeStamp;
-  Bool_t isOldFPD;
+  Bool_t isOldCab;
+  UInt_t fDecodeCorr;
   
   Double_t* fScalerOpen;
   Double_t* fScalerGated;    // Gated with PairSpec
