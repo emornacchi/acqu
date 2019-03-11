@@ -323,7 +323,7 @@ void TA2LinearPolEpics::PostInitialise( )
       fprintf(stderr,"Warning: Couldn't find TA2Ladder *%s\n",fLadderName);
       break;
     }
-    
+ 
     fBeamEnergy = fTagger->GetBeamEnergy();	//get the beam energy
     fTaggerChannels = fLadder->GetNelem();	//get the no of elements in the Ladder
     fCurrentPolTable = new Double_t[fLadder->GetNelem()]; //get the no of elements in the Ladder
@@ -732,7 +732,7 @@ void TA2LinearPolEpics::PostInitialise( )
 
 //-----------------------------------------------------------------------------
 void TA2LinearPolEpics::Reconstruct( ){
-  
+
   Double_t normValue=0.0;
   Double_t normValueGated=0.0;
   int ncount=0;
@@ -1239,7 +1239,7 @@ void TA2LinearPolEpics::Reconstruct( ){
 
 
 void TA2LinearPolEpics::ParseMisc(char *line){	// read parameters in the setup file
-
+ 
   Char_t miscType[10];
   Char_t tempString[80];
   Char_t planeString[10];
@@ -1380,7 +1380,7 @@ int TA2LinearPolEpics::LoadAmoRef(Char_t *refFileName){
   Double_t content;
   Double_t gateRef; //difference between prompt and rand ref
   Bool_t IsFlagged; //File has a column with gated reference
-
+   
   if((fp=fopen(refFileName,"r"))!=NULL){
     channel=0;
     for(;;){                            		// scan lines from scaler dump file
